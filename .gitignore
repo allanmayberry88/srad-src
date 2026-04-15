@@ -28,9 +28,10 @@ node_modules/
 # Docker
 docker-compose.override.yml
 
-# IDE
+# IDE / tooling local state
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
