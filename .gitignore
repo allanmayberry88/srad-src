@@ -1,0 +1,53 @@
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.mcp.json
+
+# n8n credentials (never commit)
+**/n8n/credentials/*
+!**/n8n/credentials/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Node (n8n local dev)
+node_modules/
+
+# Docker
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Voice samples (contain real customer data)
+**/voice-samples/
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
