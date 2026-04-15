@@ -6,7 +6,7 @@ This repo contains automation modules for Srad, a productised AI sprint business
 
 | Module | Directory | Status | Description |
 |--------|-----------|--------|-------------|
-| qFollow | `qfollow/` | Phase 0 | Quote/proposal follow-up automation |
+| qFollow | `qfollow/` | Phase 1 (checkpoint 4 ✅) | Quote/proposal follow-up automation |
 
 ## Cross-Project Conventions
 
@@ -97,4 +97,9 @@ This repo contains automation modules for Srad, a productised AI sprint business
 
 _Updated after each phase. Add findings here so future modules benefit._
 
-- (none yet — Phase 0 in progress)
+- **n8n env access:** set `N8N_BLOCK_ENV_ACCESS_IN_NODE=false` to let expressions read `$env`.
+- **n8n HTTP node `jsonBody`:** wrap in `={{ JSON.stringify({...}) }}` — raw `={...}` with template literals fails static JSON validation.
+- **n8n Code nodes:** default mode drops all items except the first. Use `mode: "runOnceForEachItem"` whenever upstream fans out.
+- **Supabase REST → n8n HTTP node:** single-element arrays are auto-unwrapped in expressions. Reference `$json.field`, not `$json[0].field`.
+- **Gmail push cursor:** persist `history.list` response's `historyId`, not the Pub/Sub notification's (which can be stale).
+- See `qfollow/LEARNINGS.md` for full Phase 1 gotcha log.
