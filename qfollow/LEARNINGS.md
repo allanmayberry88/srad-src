@@ -6,6 +6,17 @@ Format: one entry per learning, newest at the top. Tag with phase + date.
 
 ---
 
+## WhatsApp Integration — 2026-04-18
+
+- **n8n webhook path sharing:** GET and POST on the same path require separate workflows (one for Meta webhook verification, one for incoming messages). n8n Webhook nodes handle one HTTP method each.
+- **Meta webhook payload structure:** Nested under `entry[0].changes[0].value.messages[0]` — three levels deeper than Slack. Status updates (delivered/read) arrive on the same webhook but have no `messages` array — must check for its presence before parsing.
+- **WhatsApp sandbox limitations:** Only pre-registered phone numbers can receive messages. Business-initiated messages outside 24h session require template messages (sandbox approves instantly). Temporary access tokens from the dashboard expire after 24h — use System User tokens for sustained operation.
+- **n8n partial workflow update — removeConnection:** The `sourceOutput`/`targetInput` params on `removeConnection` operations cause failures when specified. Omit them and let the tool match by source/target node name alone.
+- **Switch node output routing:** Use `sourceOutput: "case=0"`, `"case=1"` etc. for Switch node connections, and `"extra"` for the fallback output.
+- **Parallel queries from IF true branch:** n8n supports multiple targets from a single IF output — used to fire `Find Pending Followup` and `Find Pending Quote` in parallel from the "valid action" true branch.
+- **whatsapp-interactions uses /webhook/whatsapp/interact:** Separate path from the echo/verify workflow at /webhook/whatsapp to avoid conflicts during transition. Will consolidate once echo workflow is deactivated.
+- **Workflow IDs:** whatsapp-verify=Mxu5efWz3pMenm84, whatsapp-echo=Lity3geNViZ8AuCO, whatsapp-interactions=6KeUR5skC8wTLCK8
+
 ## Phase 2 — 2026-04-18 (checkpoint 11)
 
 ### Supabase column names: always verify before building workflow nodes
