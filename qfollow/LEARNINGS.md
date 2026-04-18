@@ -6,6 +6,29 @@ Format: one entry per learning, newest at the top. Tag with phase + date.
 
 ---
 
+## Phase 2 — 2026-04-18 (checkpoint 11)
+
+### Supabase column names: always verify before building workflow nodes
+The `tenants` table uses `name` not `company_name`. The `followups` table has a required `stage` column with no default. Both caused runtime errors in the slash-commands workflow. Always check `information_schema.columns` before creating INSERT/SELECT nodes.
+
+### Slash command form bodies are flat, not wrapped in `payload`
+Unlike Slack interactions (which wrap everything in a `payload` JSON string), slash commands send fields directly as `application/x-www-form-urlencoded`: `text`, `team_id`, `response_url`, etc. Access via `$json.body.text` in n8n.
+
+### Duplicate Slack responses from slow async processing
+When the webhook acks 200 via `Respond to Webhook` but the async processing (Insert Quote → Build Followups → Insert Followups → Ack Track OK) takes a few seconds, Slack may retry the `response_url` POST. The 3 identical "Tracking quote to..." messages were Slack retries, not duplicate inserts — the data was clean (1 quote, 3 followups).
+
+---
+
+## Phase 2 — 2026-04-18 (checkpoint 9)
+
+### HTTP Request nodes: never set `authentication: "genericCredentialType"` unless you have a linked credential
+When creating HTTP Request nodes via MCP, setting `authentication: "genericCredentialType"` with `genericAuthType: "httpHeaderAuth"` causes "Credentials not found" at runtime — n8n looks for a stored credential that doesn't exist. If you're passing API keys via header expressions (`$env.SUPABASE_SERVICE_KEY`), either omit the `authentication` field entirely (defaults to `"none"`) or explicitly set `authentication: "none"`. All Phase 1 nodes worked because they omitted the field.
+
+### n8n cron schedules reset on workflow save
+When a workflow with a Schedule Trigger is saved (including via MCP partial update), n8n re-registers the cron relative to the save time, not the original schedule. A workflow firing at :15/:30/:45 will shift its schedule if saved at :22. Not a bug, just means don't expect the old schedule to hold after an update.
+
+---
+
 ## Phase 1 — 2026-04-18 (checkpoint 6)
 
 ## Phase 1 — 2026-04-18 (checkpoint 7)

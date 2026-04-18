@@ -6,7 +6,7 @@ This repo contains automation modules for Srad, a productised AI sprint business
 
 | Module | Directory | Status | Description |
 |--------|-----------|--------|-------------|
-| qFollow | `qfollow/` | Phase 1 (checkpoint 4 ✅) | Quote/proposal follow-up automation |
+| qFollow | `qfollow/` | Phase 2 complete ✅ — dogfood ready | Quote/proposal follow-up automation |
 
 ## Cross-Project Conventions
 
@@ -73,6 +73,16 @@ This repo contains automation modules for Srad, a productised AI sprint business
 - Row-Level Security (RLS) enforced on every table — no exceptions
 - Every query must filter by `tenant_id`
 
+### Tenant Isolation (CRITICAL)
+
+- Every Supabase query MUST include `tenant_id` filter — no exceptions
+- Slack notifications MUST use the tenant's `slack_channel` from DB lookup — never hardcode or use env vars
+- Error handler alerts go to operator channel only — never include customer email content
+- DB triggers enforce cross-table tenant_id consistency (followups ↔ quotes, events ↔ quotes)
+- New workflows: establish tenant_id in the first 2-3 nodes, propagate to all downstream queries
+- Cron-driven batch workflows (reply-checker, followup-scheduler) query all tenants but carry tenant_id per-item through the data flow
+- `test_tenant_isolation.py` audits all workflows against these rules — run before every deploy
+
 ### Secrets & Config
 
 - Never commit secrets — use `.env` files (gitignored)
@@ -102,4 +112,7 @@ _Updated after each phase. Add findings here so future modules benefit._
 - **n8n Code nodes:** default mode drops all items except the first. Use `mode: "runOnceForEachItem"` whenever upstream fans out.
 - **Supabase REST → n8n HTTP node:** single-element arrays are auto-unwrapped in expressions. Reference `$json.field`, not `$json[0].field`.
 - **Gmail push cursor:** persist `history.list` response's `historyId`, not the Pub/Sub notification's (which can be stale).
-- See `qfollow/LEARNINGS.md` for full Phase 1 gotcha log.
+- **n8n HTTP Request `authentication`:** never set `genericCredentialType` via MCP unless you have a linked n8n credential store entry. Use `"none"` and pass keys via header expressions.
+- **n8n cron schedule reset:** saving a workflow with Schedule Trigger resets the cron relative to save time.
+- **Supabase column names:** always verify via `information_schema.columns` before building workflow nodes — don't assume column names.
+- See `qfollow/LEARNINGS.md` for full Phase 1+2 gotcha log.
