@@ -111,8 +111,8 @@ Built live via the n8n MCP, not imported from JSON. Current state:
 | `qfollow — quote-detection` | `Tmc7atNtMiVL6atO` | ✅ active | Pub/Sub push on `/webhook/pubsub/gmail` |
 | `qfollow — slack-interactions` | `jbqHWAMY7BiTGmyQ` | ✅ active | Slack Interactivity on `/webhook/slack/interactions` |
 | `qfollow — followup-scheduler` | `FYGYpXxFZmN7Glax` | ✅ active | Cron every 15 minutes |
-| `reply-checker` | — | not built yet | cron 15m |
-| `gmail-watch-renewal` | — | not built yet | cron 6h |
+| `qfollow — reply-checker` | `fMRmtM0ObxQ6RxWh` | ✅ active | Cron every 15 minutes |
+| `qfollow — gmail-watch-renewal` | `ur3k7b06Rfm6D1zn` | ✅ active | Cron every 6 hours |
 
 Credentials required on the quote-detection workflow (attached in the n8n UI):
 - **Gmail OAuth2 API** — on `Gmail history.list` and `Gmail messages.get`. Create once, reuse.

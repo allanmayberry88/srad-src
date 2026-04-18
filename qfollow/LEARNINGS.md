@@ -8,6 +8,16 @@ Format: one entry per learning, newest at the top. Tag with phase + date.
 
 ## Phase 1 — 2026-04-18 (checkpoint 6)
 
+## Phase 1 — 2026-04-18 (checkpoint 7)
+
+### Boolean IF conditions need `singleValue: true` for unary operators
+When creating an IF node via MCP with a boolean check like `$json.hasReply == true`, the operator must use `"operation": "true"` with `"singleValue": true` and no `rightValue`. Without `singleValue`, the node validation fails. This applies to all unary operators: `true`, `false`, `empty`, `notEmpty`.
+
+### Gmail `threads.get` with `format=metadata` is lightweight for reply checking
+Use `format=metadata&metadataHeaders=From,To` to get just the headers needed for reply detection without downloading full message bodies. Each message in the thread includes `payload.headers` with the From field, which can be compared against the stored `recipient_email`.
+
+---
+
 ### Switch node v3 requires `conditions.options` in every rule
 When creating a Switch node via MCP, each rule's `conditions` object must include `"options": {"caseSensitive": true, "typeValidation": "loose"}`. Without this, the node crashes at runtime with `Cannot read properties of undefined (reading 'caseSensitive')`. The auto-sanitizer is supposed to add this but doesn't reliably do so for Switch rules — always include it explicitly.
 
