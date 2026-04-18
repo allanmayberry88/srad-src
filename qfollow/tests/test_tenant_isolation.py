@@ -33,6 +33,7 @@ CROSS_TENANT_ALLOWLIST = {
     # Insert Followups: POST body contains tenant_id in row data (dynamic expression)
     "qfollow — slack-commands": {"Insert Followups"},
     "qfollow — slack-interactions": {"Insert Followups"},
+    "qfollow — whatsapp-interactions": {"Insert Followups"},
 }
 
 # Tables where tenant_id column isn't applicable:
@@ -179,11 +180,35 @@ def test_no_hardcoded_slack_channels():
         pytest.fail(msg)
 
 
+def test_no_hardcoded_whatsapp_numbers():
+    """WhatsApp messages must use tenant's number from DB, not hardcoded values."""
+    workflows = _get_workflows()
+
+    phone_pattern = re.compile(r"\b\d{10,15}\b")
+
+    violations = []
+    for wf in workflows:
+        for node in wf.get("nodes", []):
+            params = node.get("parameters", {})
+            url = params.get("url", "")
+            body = params.get("jsonBody", "")
+            if "graph.facebook.com" not in url:
+                continue
+            if phone_pattern.search(body):
+                violations.append(
+                    f"  {wf['name']} → {node['name']}: hardcoded phone number in body"
+                )
+
+    if violations:
+        msg = "Hardcoded WhatsApp phone numbers found:\n" + "\n".join(violations)
+        pytest.fail(msg)
+
+
 def test_workflow_count():
     """Verify expected number of qfollow workflows are active."""
     workflows = _get_workflows()
     active = [w for w in workflows if w.get("active")]
-    assert len(active) >= 7, (
-        f"Expected at least 7 active qfollow workflows, found {len(active)}: "
+    assert len(active) >= 8, (
+        f"Expected at least 8 active qfollow workflows, found {len(active)}: "
         + ", ".join(w["name"] for w in active)
     )

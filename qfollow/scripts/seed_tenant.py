@@ -18,7 +18,14 @@ import sys
 import urllib.request
 
 
-def upsert_tenant(name: str, email: str, slack_channel: str, slack_team_id: str | None = None) -> dict:
+def upsert_tenant(
+    name: str,
+    email: str,
+    slack_channel: str,
+    slack_team_id: str | None = None,
+    approval_channel: str = "slack",
+    whatsapp_phone_number: str | None = None,
+) -> dict:
     url = os.environ["SUPABASE_URL"].rstrip("/") + "/rest/v1/tenants"
     key = os.environ["SUPABASE_SERVICE_KEY"]
     payload = {
@@ -27,9 +34,12 @@ def upsert_tenant(name: str, email: str, slack_channel: str, slack_team_id: str 
         "email_provider": "google",
         "slack_channel": slack_channel,
         "active": True,
+        "approval_channel": approval_channel,
     }
     if slack_team_id:
         payload["slack_team_id"] = slack_team_id
+    if whatsapp_phone_number:
+        payload["whatsapp_phone_number"] = whatsapp_phone_number
     req = urllib.request.Request(
         url + "?on_conflict=email_address",
         data=json.dumps(payload).encode("utf-8"),
@@ -51,8 +61,17 @@ def main() -> int:
     p.add_argument("--email", required=True)
     p.add_argument("--slack-channel", required=True)
     p.add_argument("--slack-team-id", default=None)
+    p.add_argument("--approval-channel", default="slack", choices=["slack", "whatsapp"])
+    p.add_argument("--whatsapp-phone-number", default=None)
     args = p.parse_args()
-    row = upsert_tenant(args.name, args.email, args.slack_channel, args.slack_team_id)
+    row = upsert_tenant(
+        args.name,
+        args.email,
+        args.slack_channel,
+        args.slack_team_id,
+        args.approval_channel,
+        args.whatsapp_phone_number,
+    )
     print(f"Tenant upserted: id={row['id']} email={row['email_address']}")
     return 0
 
