@@ -1,0 +1,15 @@
+{
+  "description": "Day 14 direct follow-up with validity reference",
+  "api_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"draft_subject\":\"Re: Proposal - 2-week AI Sprint for Thistle & Finch Accountants\",\"draft_body\":\"Hi Rachel,\\n\\nWanted to circle back on the AI sprint proposal. The pricing I quoted is valid until 18 May, so there's still time, but I'd love to get things moving if you're keen.\\n\\nWould a quick 15-minute call this week work? Happy to walk through anything that's still unclear.\\n\\nCheers,\\nAllan\"}"
+      }
+    ]
+  },
+  "expected": {
+    "draft_subject": "Re: Proposal - 2-week AI Sprint for Thistle & Finch Accountants",
+    "draft_body": "Hi Rachel,\n\nWanted to circle back on the AI sprint proposal. The pricing I quoted is valid until 18 May, so there's still time, but I'd love to get things moving if you're keen.\n\nWould a quick 15-minute call this week work? Happy to walk through anything that's still unclear.\n\nCheers,\nAllan"
+  }
+}

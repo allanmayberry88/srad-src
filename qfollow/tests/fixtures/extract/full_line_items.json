@@ -1,0 +1,23 @@
+{
+  "description": "Quote with full line items, amount, and validity date",
+  "api_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"recipient_name\":\"Jane Smith\",\"recipient_email\":\"jane@acme.co.uk\",\"total_amount\":4200.00,\"currency\":\"GBP\",\"proposed_items\":[{\"description\":\"AI sprint — data migration\",\"qty\":1,\"unit_price\":2800.00},{\"description\":\"AI sprint — dashboard build\",\"qty\":1,\"unit_price\":1400.00}],\"valid_until\":\"2026-05-15\",\"summary\":\"AI sprint: data migration + dashboard build for Acme Ltd\"}"
+      }
+    ]
+  },
+  "expected": {
+    "recipient_name": "Jane Smith",
+    "recipient_email": "jane@acme.co.uk",
+    "total_amount": 4200.00,
+    "currency": "GBP",
+    "proposed_items": [
+      {"description": "AI sprint — data migration", "qty": 1, "unit_price": 2800.00},
+      {"description": "AI sprint — dashboard build", "qty": 1, "unit_price": 1400.00}
+    ],
+    "valid_until": "2026-05-15",
+    "summary": "AI sprint: data migration + dashboard build for Acme Ltd"
+  }
+}

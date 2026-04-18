@@ -1,0 +1,15 @@
+{
+  "description": "Day 3 casual follow-up draft",
+  "api_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"draft_subject\":\"Re: Proposal - 2-week AI Sprint for Thistle & Finch Accountants\",\"draft_body\":\"Hi Rachel,\\n\\nJust wanted to check the proposal I sent over on Friday landed safely in your inbox. No rush at all - just let me know if you have any questions.\\n\\nCheers,\\nAllan\"}"
+      }
+    ]
+  },
+  "expected": {
+    "draft_subject": "Re: Proposal - 2-week AI Sprint for Thistle & Finch Accountants",
+    "draft_body": "Hi Rachel,\n\nJust wanted to check the proposal I sent over on Friday landed safely in your inbox. No rush at all - just let me know if you have any questions.\n\nCheers,\nAllan"
+  }
+}

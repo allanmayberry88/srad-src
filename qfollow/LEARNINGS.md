@@ -6,6 +6,41 @@ Format: one entry per learning, newest at the top. Tag with phase + date.
 
 ---
 
+## Phase 1 — 2026-04-18 (checkpoint 6)
+
+### Switch node v3 requires `conditions.options` in every rule
+When creating a Switch node via MCP, each rule's `conditions` object must include `"options": {"caseSensitive": true, "typeValidation": "loose"}`. Without this, the node crashes at runtime with `Cannot read properties of undefined (reading 'caseSensitive')`. The auto-sanitizer is supposed to add this but doesn't reliably do so for Switch rules — always include it explicitly.
+
+### n8n partial update: use `source`/`target` for connections, not `from`/`to`
+The `n8n_update_partial_workflow` MCP tool uses `source` and `target` parameters for `addConnection` operations. Using `from`/`to` (which are used for `rewireConnection`) causes a "Missing required parameter 'source'" error. For Switch node outputs, use `case=N` (0-indexed); for IF node outputs, use `branch="true"/"false"`.
+
+### Switch node replaces IF for multi-action routing
+When a single webhook handles multiple action types (e.g., 6 different Slack button actions), replace the IF node with a Switch node (v3). Each case matches on `$json.action_id`. The Switch node supports named outputs via `renameOutput: true` + `outputKey`.
+
+### Gmail `drafts.create` uses base64url-encoded RFC 2822
+The Gmail API's `drafts.create` endpoint expects `{ message: { raw: "<base64url>" } }`. The raw value is a full RFC 2822 message (with To, Subject, Content-Type headers) encoded with `Buffer.from(msg, 'utf-8').toString('base64url')`. Include `threadId` in the message object to place the draft in the correct conversation thread.
+
+---
+
+## Phase 1 — 2026-04-18 (checkpoint 5)
+
+### Tenant record must have `slack_team_id` set for interaction handler
+The slack-interactions workflow looks up the tenant by `slack_team_id` (from the Slack interaction payload's `team.id`). The original seed script didn't set this field, causing the lookup to return 0 rows and silently stopping the workflow. Always seed `slack_team_id` when creating a tenant — it's required for any Slack interaction handling.
+
+### Slack interactions use `response_url` for async updates
+Slack expects a 200 response within 3 seconds of a button click. Use `responseMode: "responseNode"` on the webhook + a `Respond to Webhook` node to immediately return 200, then continue async processing. POST to the `response_url` (included in every interaction payload) with `replace_original: true` to swap the original message's buttons for a confirmation.
+
+### Slack sends interactions as `application/x-www-form-urlencoded`
+The payload is URL-encoded form data with a single `payload` field containing a JSON string — not a JSON body. In n8n, access it via `$json.body.payload` (or `$json.payload` depending on webhook version). Always `JSON.parse()` it in a Code node.
+
+### Supabase POST with `Prefer: return=representation` returns an array
+Even for a single-row INSERT, Supabase REST returns `[{row}]`. Due to n8n's expression auto-unwrapping (see earlier learning), downstream expressions can use `$json.id` directly, but Code nodes may receive the raw array — add `Array.isArray` guard when needed.
+
+### Referencing upstream nodes across long chains works fine
+`$('NodeName').item.json` can reference any ancestor node in the execution path, even many nodes back. Used extensively in the slack-interactions workflow to pull `response_url` from Parse Payload and extraction data from Parse Extraction at the final Ack node.
+
+---
+
 ## Phase 1 — 2026-04-15
 
 ### `$env` access is blocked in n8n by default

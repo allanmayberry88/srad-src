@@ -1,0 +1,15 @@
+{
+  "description": "Day 7 substantive follow-up draft",
+  "api_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"draft_subject\":\"Re: Proposal - 2-week AI Sprint for Thistle & Finch Accountants\",\"draft_body\":\"Hi Rachel,\\n\\nJust checking in on the AI sprint proposal I sent over last week. I know automating the management-accounts pack is a big decision - happy to jump on a quick call if it would help to talk through the approach.\\n\\nLet me know if you have any questions or if there's anything I can clarify.\\n\\nCheers,\\nAllan\"}"
+      }
+    ]
+  },
+  "expected": {
+    "draft_subject": "Re: Proposal - 2-week AI Sprint for Thistle & Finch Accountants",
+    "draft_body": "Hi Rachel,\n\nJust checking in on the AI sprint proposal I sent over last week. I know automating the management-accounts pack is a big decision - happy to jump on a quick call if it would help to talk through the approach.\n\nLet me know if you have any questions or if there's anything I can clarify.\n\nCheers,\nAllan"
+  }
+}

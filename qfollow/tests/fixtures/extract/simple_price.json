@@ -1,0 +1,20 @@
+{
+  "description": "Simple quote with a single price, no line items, no validity",
+  "api_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"recipient_name\":\"Bob Taylor\",\"recipient_email\":\"bob@taylorplumbing.co.uk\",\"total_amount\":850.00,\"currency\":\"GBP\",\"proposed_items\":null,\"valid_until\":null,\"summary\":\"Website redesign for Taylor Plumbing\"}"
+      }
+    ]
+  },
+  "expected": {
+    "recipient_name": "Bob Taylor",
+    "recipient_email": "bob@taylorplumbing.co.uk",
+    "total_amount": 850.00,
+    "currency": "GBP",
+    "proposed_items": null,
+    "valid_until": null,
+    "summary": "Website redesign for Taylor Plumbing"
+  }
+}

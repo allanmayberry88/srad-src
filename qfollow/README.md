@@ -109,8 +109,8 @@ Built live via the n8n MCP, not imported from JSON. Current state:
 | Workflow | ID | Status | Trigger |
 |---|---|---|---|
 | `qfollow — quote-detection` | `Tmc7atNtMiVL6atO` | ✅ active | Pub/Sub push on `/webhook/pubsub/gmail` |
-| `slack-interactions` | — | not built yet (checkpoint 5) | Slack Interactivity webhook |
-| `followup-scheduler` | — | not built yet | cron 15m |
+| `qfollow — slack-interactions` | `jbqHWAMY7BiTGmyQ` | ✅ active | Slack Interactivity on `/webhook/slack/interactions` |
+| `qfollow — followup-scheduler` | `FYGYpXxFZmN7Glax` | ✅ active | Cron every 15 minutes |
 | `reply-checker` | — | not built yet | cron 15m |
 | `gmail-watch-renewal` | — | not built yet | cron 6h |
 

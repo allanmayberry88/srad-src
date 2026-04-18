@@ -1,0 +1,20 @@
+{
+  "description": "Quote where the price is not stated (price to follow)",
+  "api_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"recipient_name\":\"Sarah Chen\",\"recipient_email\":\"sarah@northlegal.co.uk\",\"total_amount\":null,\"currency\":\"GBP\",\"proposed_items\":null,\"valid_until\":null,\"summary\":\"Legal document automation scoping proposal\"}"
+      }
+    ]
+  },
+  "expected": {
+    "recipient_name": "Sarah Chen",
+    "recipient_email": "sarah@northlegal.co.uk",
+    "total_amount": null,
+    "currency": "GBP",
+    "proposed_items": null,
+    "valid_until": null,
+    "summary": "Legal document automation scoping proposal"
+  }
+}
